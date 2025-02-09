@@ -1,0 +1,23 @@
+server:
+  port: 9090
+
+kc:
+  base-url: http://localhost:8080/auth
+  realm: myrealm
+  realm-url: ${kc.base-url}/realms/${kc.realm}
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: myclient #Aplicação cliente no keycloack
+            client-secret: ap2Dlxa9eQ7j18GKtbFiSZ0O36BP54ZS #credential no keycloack
+            scope: openid, profile, email #scopes são dados que o keycloack fornece
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/myrealm
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/myrealm
