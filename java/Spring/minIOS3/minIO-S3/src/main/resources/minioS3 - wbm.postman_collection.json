@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "828472e8-c1bc-4c4c-9e84-d8cbfb818a97",
+		"name": "minioS3 - wbm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3689762"
+	},
+	"item": [
+		{
+			"name": "upload arquivo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "postman-cloud:///1f000153-6a10-41c0-b5b8-b64fa6b402f2"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8912/arquivos/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8912",
+					"path": [
+						"arquivos",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lista Arquivos do Bucket",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8912/arquivos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8912",
+					"path": [
+						"arquivos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download de Arquivo do Bucket",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8912/arquivos/download?fileName=8435d0a5-d4fe-3984-95ff-dd5a1acb802b/1cc5139b-6ec7-465f-a177-66a37e5974b5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8912",
+					"path": [
+						"arquivos",
+						"download"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "8435d0a5-d4fe-3984-95ff-dd5a1acb802b/1cc5139b-6ec7-465f-a177-66a37e5974b5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download de Arquivo do Bucket Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8912/arquivos/propriedades?fileName=8435d0a5-d4fe-3984-95ff-dd5a1acb802b/1cc5139b-6ec7-465f-a177-66a37e5974b5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8912",
+					"path": [
+						"arquivos",
+						"propriedades"
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "8435d0a5-d4fe-3984-95ff-dd5a1acb802b/1cc5139b-6ec7-465f-a177-66a37e5974b5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

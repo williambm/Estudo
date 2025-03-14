@@ -4,6 +4,8 @@ import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.Result;
+import io.minio.StatObjectArgs;
+import io.minio.StatObjectResponse;
 import io.minio.errors.ErrorResponseException;
 import io.minio.errors.InsufficientDataException;
 import io.minio.errors.InternalException;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.unesp.minios3.dto.DocumentManagerFileProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -125,5 +128,40 @@ public class ArquivoService {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Arquivo não encontrado: " + fileName);
         }
+    }
+
+    public DocumentManagerFileProperties getArquivoPropriedades(UUID fileName) {
+        // Obtém as propriedades do arquivo
+        try {
+            // Obtém as propriedades do arquivo por um StatObjectArgs (DTO personalizado do minIO)
+            StatObjectResponse objectStat = minioClient.statObject(
+                    StatObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(fileName.toString())
+                            .build()
+            );
+
+            //Como podemos usar ou não a ideia de pastas no S3 vamos extrair apenas o nome do arquivo para exibir corretamente no DTO
+            String[] parts = objectStat.object().split("/");
+            String nomeUuidExtraido = (parts.length > 1) ? parts[1] : objectStat.object();
+
+            return DocumentManagerFileProperties.builder()
+                    .size(objectStat.size())
+                    .uuid(nomeUuidExtraido)
+                    .path(objectStat.object())
+                    .mimeType(objectStat.contentType())
+                    .build();
+        } catch (ErrorResponseException |
+                 InsufficientDataException |
+                 InternalException |
+                 InvalidKeyException |
+                 InvalidResponseException |
+                 IOException |
+                 NoSuchAlgorithmException |
+                 ServerException |
+                 XmlParserException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Arquivo não encontrado: " + fileName);
+        }
+
     }
 }
